@@ -1,6 +1,9 @@
 import os
 import sqlite3
 import mock_data_sql
+import operator
+import matplotlib.
+
 
 dbInfo = {} # db related info
 
@@ -45,6 +48,33 @@ def get_files(dir):
     os.chdir(saved_path)
 
 
+def display_state_info(data):
+    """
+
+    :param data:
+    :return:
+    """
+    state = {}
+
+    for rec in data:
+        if rec[4] in state:
+            state[rec[4]] +=1
+        else:
+            state[rec[4]] = 1
+
+    sname = []
+    scount = []
+    #s_state = sorted(state.items())
+    for st, count in state.items():
+        print(st, count)
+        sname.append(st)
+        scount.append(st)
+
+
+    #print(s_state)
+
+
+
 def main():
     # Connect to DB
     dbInfo['con'] = sqlite3.connect('tutorial.db')
@@ -53,7 +83,14 @@ def main():
     mock_data_sql.create_table(dbInfo)
     # Path to data
     data_dir = r"C:\Users\kitof\PycharmProjects\kitspython\data"
-    get_files(data_dir)
+    #get_files(data_dir)
+    data = mock_data_sql.read_data(dbInfo)
+    # for rec in data:
+    #     print(rec)
+    display_state_info(data)
+
+    dbInfo['cur'].close()
+    dbInfo['con'].close()
 
 
 if __name__ == '__main__':
